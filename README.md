@@ -19,6 +19,17 @@ A tiny web app to visualize sliding-window API rate limits.
 
 Tip: after opening `index.html`, click any preset first, then tweak `limit/window/events` manually for quick what-if testing.
 
+
+## How to read `excluded` (boundary exclusion count)
+- `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
+- A larger `excluded` value indicates boundary-driven cleanup happened before judging ACCEPT/REJECT.
+
+### Boundary preset quick verification
+1. Click `boundary` preset.
+2. Check rows where timestamp moves across a window edge (for example around `t=10` with `window=10`).
+3. Confirm `excluded` becomes `1` when the oldest event leaves the window exactly at the boundary.
+4. Confirm decision stays consistent with the cleaned window size (`active(before)` and `active(after)`).
+
 ## Edge-case quick checks
 - **同時刻リクエスト**（`limit=2, window=10, events=1,1,1`）
   - 1つ目: ACCEPT / 2つ目: ACCEPT / 3つ目: REJECT
