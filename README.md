@@ -26,6 +26,7 @@ Tip: after opening `index.html`, click any preset first, then tweak `limit/windo
 - `REJECT`: active in-window count had already reached `limit`, so the request was not added.
 - `before` / `after` columns show the actual in-window timestamp lists at each step (not just counts), so you can inspect which events remained after boundary cleanup.
 - Header labels `in-window before` / `in-window after` in the detail table have hover tooltips; move the cursor over each header to confirm they represent timestamp lists, not aggregate counters.
+- The UI also shows an always-visible helper note (`before/after = timestamp lists, not counts`) directly above the table, so the meaning stays clear even without hovering.
 
 ## How to read `excluded` (boundary exclusion count)
 - `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
