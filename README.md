@@ -10,6 +10,7 @@ A tiny web app to visualize sliding-window API rate limits.
 - Accepts timestamp input separated by commas, spaces, or newlines
 - Prints per-request decision logs
 - Renders a detail table with in-window members **before/after** each decision
+- Shows an inline legend above the table (`boundary-hit`, `ACCEPT`, `REJECT`) so row color/decision meaning is self-explanatory
 - Preset buttons (`normal`, `boundary`, `burst`) can auto-fill inputs and run simulation instantly
 
 ## Presets
@@ -19,6 +20,10 @@ A tiny web app to visualize sliding-window API rate limits.
 
 Tip: after opening `index.html`, click any preset first, then tweak `limit/window/events` manually for quick what-if testing.
 
+## Detail table legend
+- `boundary-hit` row (light orange): one or more existing events were excluded at this step due to boundary crossing (`t - head >= window`).
+- `ACCEPT`: active in-window count was below `limit`, so the request was added.
+- `REJECT`: active in-window count had already reached `limit`, so the request was not added.
 
 ## How to read `excluded` (boundary exclusion count)
 - `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
