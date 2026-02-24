@@ -63,16 +63,21 @@ function run(){
   const rows = [];
 
   for(const t of arr){
-    while(q.length && t - q[0] >= W) q.shift();
+    let excluded = 0;
+    while(q.length && t - q[0] >= W){
+      q.shift();
+      excluded += 1;
+    }
 
     const before = q.slice();
     const ok = q.length < L;
     if(ok) q.push(t);
     const after = q.slice();
 
-    lines.push(`${t}s => ${ok ? 'ACCEPT' : 'REJECT'} (before=${before.length}, after=${after.length})`);
+    lines.push(`${t}s => ${ok ? 'ACCEPT' : 'REJECT'} (excluded=${excluded}, before=${before.length}, after=${after.length})`);
     rows.push({
       t,
+      excluded,
       before: before.join(', '),
       decision: ok ? 'ACCEPT' : 'REJECT',
       after: after.join(', ')
@@ -95,6 +100,7 @@ function renderTable(rows){
       <thead>
         <tr>
           <th>t (s)</th>
+          <th>excluded at boundary</th>
           <th>in-window before</th>
           <th>decision</th>
           <th>in-window after</th>
@@ -104,6 +110,7 @@ function renderTable(rows){
         ${rows.map(r => `
           <tr>
             <td>${r.t}</td>
+            <td>${r.excluded}</td>
             <td>${r.before || '-'}</td>
             <td class="${r.decision === 'ACCEPT' ? 'ok' : 'ng'}">${r.decision}</td>
             <td>${r.after || '-'}</td>
