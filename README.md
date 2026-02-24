@@ -10,6 +10,14 @@ A tiny web app to visualize sliding-window API rate limits.
 - Accepts timestamp input separated by commas, spaces, or newlines
 - Prints per-request decision logs
 - Renders a detail table with in-window members **before/after** each decision
+- Preset buttons (`normal`, `boundary`, `burst`) can auto-fill inputs and run simulation instantly
+
+## Presets
+- `normal`: a balanced sample flow for baseline behavior checks
+- `boundary`: values around window boundaries to confirm exclusion rules (`now - t >= window`)
+- `burst`: concentrated requests to verify rejection behavior when the limit is exceeded
+
+Tip: after opening `index.html`, click any preset first, then tweak `limit/window/events` manually for quick what-if testing.
 
 ## Edge-case quick checks
 - **同時刻リクエスト**（`limit=2, window=10, events=1,1,1`）
