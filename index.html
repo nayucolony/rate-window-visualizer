@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Rate Window Visualizer</title></head>
+<body>
+<h1>Rate Window Visualizer</h1>
+<label>Limit <input id="limit" type="number" value="5"></label>
+<label>Window(s) <input id="window" type="number" value="10"></label>
+<br>
+<textarea id="events" rows="6" cols="50">0,1,2,3,4,5,9,10,11</textarea>
+<button onclick="run()">Simulate</button>
+<pre id="out"></pre>
+<script>
+function run(){
+  const L=+document.getElementById('limit').value;
+  const W=+document.getElementById('window').value;
+  const arr=document.getElementById('events').value.split(',').map(s=>+s.trim()).filter(n=>!Number.isNaN(n));
+  const q=[]; const lines=[];
+  for(const t of arr){
+    while(q.length && t-q[0]>=W) q.shift();
+    const ok=q.length<L;
+    if(ok) q.push(t);
+    lines.push(`${t}s => ${ok?'ACCEPT':'REJECT'} (in-window=${q.length})`);
+  }
+  document.getElementById('out').textContent=lines.join('\n');
+}
+run();
+</script>
+</body></html>
