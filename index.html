@@ -22,6 +22,9 @@
 <br>
 <small>timestamps can be comma, space, or newline separated</small>
 <br><br>
+<button onclick="applyPreset('normal')">Preset: normal</button>
+<button onclick="applyPreset('boundary')">Preset: boundary</button>
+<button onclick="applyPreset('burst')">Preset: burst</button>
 <button onclick="run()">Simulate</button>
 <pre id="out"></pre>
 <div id="tableWrap"></div>
@@ -34,6 +37,20 @@ function parseEvents(raw){
     .filter(Boolean)
     .map(Number)
     .filter(n => !Number.isNaN(n));
+}
+
+function applyPreset(name){
+  const presets = {
+    normal: { limit: 5, window: 10, events: '0,1,2,3,4,5,9,10,11' },
+    boundary: { limit: 2, window: 10, events: '0,5,10' },
+    burst: { limit: 3, window: 10, events: '0,0,1,1,1,2,2,3' }
+  };
+  const p = presets[name];
+  if(!p) return;
+  document.getElementById('limit').value = p.limit;
+  document.getElementById('window').value = p.window;
+  document.getElementById('events').value = p.events;
+  run();
 }
 
 function run(){
