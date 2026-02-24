@@ -29,6 +29,12 @@ Tip: after opening `index.html`, click any preset first, then tweak `limit/windo
 2. Check rows where timestamp moves across a window edge (for example around `t=10` with `window=10`).
 3. Confirm `excluded` becomes `1` when the oldest event leaves the window exactly at the boundary.
 4. Confirm decision stays consistent with the cleaned window size (`active(before)` and `active(after)`).
+5. Confirm rows with `excluded > 0` are highlighted with the `boundary-hit` style (light red background) so boundary cleanup points are immediately visible.
+
+### Screenshot checklist (boundary highlight)
+- Include at least one highlighted `boundary-hit` row where `excluded=1`.
+- Keep `active(before)`, `decision`, and `active(after)` in frame to show judgment consistency after cleanup.
+- Prefer a capture that includes preset buttons so the scenario (`boundary`) is reproducible.
 
 ## Edge-case quick checks
 - **同時刻リクエスト**（`limit=2, window=10, events=1,1,1`）
