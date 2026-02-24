@@ -97,7 +97,12 @@ function renderTable(rows){
   }
 
   const html = `
-    <p><small><span style="background:#fff4e5;padding:2px 6px;border-radius:4px;">highlight</span> = boundary exclusions occurred in this step</small></p>
+    <p><small>Legend:</small></p>
+    <ul style="margin:0 0 10px 16px;padding:0;font-size:12px;line-height:1.6;">
+      <li><span style="background:#fff4e5;padding:2px 6px;border-radius:4px;">boundary-hit row</span> = this step excluded one or more events at the window boundary (<code>t - head >= window</code>)</li>
+      <li><span class="ok">ACCEPT</span> = request stayed under limit and was added to in-window queue</li>
+      <li><span class="ng">REJECT</span> = in-window queue already reached limit before this request</li>
+    </ul>
     <table>
       <thead>
         <tr>
