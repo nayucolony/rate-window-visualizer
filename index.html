@@ -11,6 +11,7 @@
     th { background: #f7f7f7; }
     .ok { color: #0a7b2e; font-weight: 600; }
     .ng { color: #b42318; font-weight: 600; }
+    .boundary-hit { background: #fff4e5; }
   </style>
 </head>
 <body>
@@ -96,6 +97,7 @@ function renderTable(rows){
   }
 
   const html = `
+    <p><small><span style="background:#fff4e5;padding:2px 6px;border-radius:4px;">highlight</span> = boundary exclusions occurred in this step</small></p>
     <table>
       <thead>
         <tr>
@@ -108,7 +110,7 @@ function renderTable(rows){
       </thead>
       <tbody>
         ${rows.map(r => `
-          <tr>
+          <tr class="${r.excluded > 0 ? 'boundary-hit' : ''}">
             <td>${r.t}</td>
             <td>${r.excluded}</td>
             <td>${r.before || '-'}</td>
