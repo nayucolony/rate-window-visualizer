@@ -1,27 +1,104 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Rate Window Visualizer</title></head>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rate Window Visualizer</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; margin: 24px; }
+    textarea { width: 100%; max-width: 680px; }
+    table { border-collapse: collapse; margin-top: 12px; width: 100%; max-width: 860px; }
+    th, td { border: 1px solid #ddd; padding: 6px 8px; font-size: 13px; }
+    th { background: #f7f7f7; }
+    .ok { color: #0a7b2e; font-weight: 600; }
+    .ng { color: #b42318; font-weight: 600; }
+  </style>
+</head>
 <body>
 <h1>Rate Window Visualizer</h1>
-<label>Limit <input id="limit" type="number" value="5"></label>
-<label>Window(s) <input id="window" type="number" value="10"></label>
+<label>Limit <input id="limit" type="number" value="5" min="1"></label>
+<label>Window(s) <input id="window" type="number" value="10" min="1"></label>
+<br><br>
+<textarea id="events" rows="6">0,1,2,3,4,5,9,10,11</textarea>
 <br>
-<textarea id="events" rows="6" cols="50">0,1,2,3,4,5,9,10,11</textarea>
+<small>timestamps can be comma, space, or newline separated</small>
+<br><br>
 <button onclick="run()">Simulate</button>
 <pre id="out"></pre>
+<div id="tableWrap"></div>
+
 <script>
-function run(){
-  const L=+document.getElementById('limit').value;
-  const W=+document.getElementById('window').value;
-  const arr=document.getElementById('events').value.split(',').map(s=>+s.trim()).filter(n=>!Number.isNaN(n));
-  const q=[]; const lines=[];
-  for(const t of arr){
-    while(q.length && t-q[0]>=W) q.shift();
-    const ok=q.length<L;
-    if(ok) q.push(t);
-    lines.push(`${t}s => ${ok?'ACCEPT':'REJECT'} (in-window=${q.length})`);
-  }
-  document.getElementById('out').textContent=lines.join('\n');
+function parseEvents(raw){
+  return raw
+    .split(/[\s,]+/)
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map(Number)
+    .filter(n => !Number.isNaN(n));
 }
+
+function run(){
+  const L = +document.getElementById('limit').value;
+  const W = +document.getElementById('window').value;
+  const arr = parseEvents(document.getElementById('events').value);
+
+  const q = [];
+  const lines = [];
+  const rows = [];
+
+  for(const t of arr){
+    while(q.length && t - q[0] >= W) q.shift();
+
+    const before = q.slice();
+    const ok = q.length < L;
+    if(ok) q.push(t);
+    const after = q.slice();
+
+    lines.push(`${t}s => ${ok ? 'ACCEPT' : 'REJECT'} (before=${before.length}, after=${after.length})`);
+    rows.push({
+      t,
+      before: before.join(', '),
+      decision: ok ? 'ACCEPT' : 'REJECT',
+      after: after.join(', ')
+    });
+  }
+
+  document.getElementById('out').textContent = lines.join('\n');
+  renderTable(rows);
+}
+
+function renderTable(rows){
+  const wrap = document.getElementById('tableWrap');
+  if(!rows.length){
+    wrap.innerHTML = '<p>No valid timestamps.</p>';
+    return;
+  }
+
+  const html = `
+    <table>
+      <thead>
+        <tr>
+          <th>t (s)</th>
+          <th>in-window before</th>
+          <th>decision</th>
+          <th>in-window after</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td>${r.t}</td>
+            <td>${r.before || '-'}</td>
+            <td class="${r.decision === 'ACCEPT' ? 'ok' : 'ng'}">${r.decision}</td>
+            <td>${r.after || '-'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  wrap.innerHTML = html;
+}
+
 run();
 </script>
-</body></html>
+</body>
+</html>
