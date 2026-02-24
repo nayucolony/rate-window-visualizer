@@ -24,6 +24,7 @@ Tip: after opening `index.html`, click any preset first, then tweak `limit/windo
 - `boundary-hit` row (light orange): one or more existing events were excluded at this step due to boundary crossing (`t - head >= window`).
 - `ACCEPT`: active in-window count was below `limit`, so the request was added.
 - `REJECT`: active in-window count had already reached `limit`, so the request was not added.
+- `before` / `after` columns show the actual in-window timestamp lists at each step (not just counts), so you can inspect which events remained after boundary cleanup.
 
 ## How to read `excluded` (boundary exclusion count)
 - `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
