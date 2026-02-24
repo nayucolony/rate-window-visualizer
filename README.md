@@ -28,6 +28,7 @@ Tip: after opening `index.html`, click any preset first, then tweak `limit/windo
 ## How to read `excluded` (boundary exclusion count)
 - `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
 - A larger `excluded` value indicates boundary-driven cleanup happened before judging ACCEPT/REJECT.
+- The per-request log line in `index.html` follows `... (excluded=X, before=Y, after=Z)`: `excluded` is the count removed at the boundary, `before` is active in-window size right before current request judgment, and `after` is active in-window size right after the ACCEPT/REJECT result is applied.
 
 ### Boundary preset quick verification
 1. Click `boundary` preset.
