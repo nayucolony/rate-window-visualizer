@@ -32,6 +32,10 @@
 
 <script>
 const HELPER_NOTE_TEXT = 'before/after = timestamp lists, not counts';
+console.assert(
+  HELPER_NOTE_TEXT.includes('timestamp lists') && HELPER_NOTE_TEXT.includes('not counts'),
+  'HELPER_NOTE_TEXT must keep the "timestamp lists, not counts" wording contract.'
+);
 
 function parseEvents(raw){
   return raw
