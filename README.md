@@ -32,14 +32,14 @@ Tip: after opening `index.html`, click any preset first, then tweak `limit/windo
 ## How to read `excluded` (boundary exclusion count)
 - `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
 - A larger `excluded` value indicates boundary-driven cleanup happened before judging ACCEPT/REJECT.
-- The per-request log line in `index.html` follows `... (excluded=X, before=[...], after=[...])`: `excluded` is the count removed at the boundary, while `before` / `after` are the actual in-window timestamp lists before/after current request judgment.
-- Example (copy-paste check): if a detail-table row shows `before=[1,5]`, `decision=ACCEPT`, `after=[1,5,8]`, the matching log line should contain `before=[1,5], after=[1,5,8]` for the same request timestamp.
+- The per-request log line in `index.html` follows `#N @ Ts => ... (excluded=X, before=[...], after=[...])`: `N` is the step index (1-origin), `excluded` is the count removed at the boundary, and `before` / `after` are the actual in-window timestamp lists before/after current request judgment.
+- Example (copy-paste check): if the 3rd detail-table row shows `before=[1,5]`, `decision=ACCEPT`, `after=[1,5,8]`, the matching log should start with `#3 @ ...` and contain `before=[1,5], after=[1,5,8]` for that same step.
 
 ### Boundary preset quick verification
 1. Click `boundary` preset.
 2. Check rows where timestamp moves across a window edge (for example around `t=10` with `window=10`).
 3. Confirm `excluded` becomes `1` when the oldest event leaves the window exactly at the boundary.
-4. In one pass, compare a single detail-table row and its matching log line to confirm they use the same `before=[...]` / `after=[...]` timestamp lists and the decision is consistent.
+4. In one pass, compare a single detail-table row and its matching `#N @ ...` log line (same step index `N`) to confirm they use the same `before=[...]` / `after=[...]` timestamp lists and the decision is consistent.
 5. Confirm rows with `excluded > 0` are highlighted with the `boundary-hit` style (light orange background) so boundary cleanup points are immediately visible.
 6. Confirm the helper note above the table exactly reads `before/after = timestamp lists, not counts` and matches the README wording.
 7. Confirm the line right below it says `Contract check: open DevTools Console and confirm no assertion failed.`.

@@ -73,7 +73,9 @@ function run(){
   const lines = [];
   const rows = [];
 
-  for(const t of arr){
+  for(let i = 0; i < arr.length; i += 1){
+    const t = arr[i];
+    const step = i + 1;
     let excluded = 0;
     while(q.length && t - q[0] >= W){
       q.shift();
@@ -85,7 +87,7 @@ function run(){
     if(ok) q.push(t);
     const after = q.slice();
 
-    lines.push(`${t}s => ${ok ? 'ACCEPT' : 'REJECT'} (excluded=${excluded}, before=[${formatList(before)}], after=[${formatList(after)}])`);
+    lines.push(`#${step} @ ${t}s => ${ok ? 'ACCEPT' : 'REJECT'} (excluded=${excluded}, before=[${formatList(before)}], after=[${formatList(after)}])`);
     rows.push({
       t,
       excluded,
