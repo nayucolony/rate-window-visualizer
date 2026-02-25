@@ -60,6 +60,10 @@ function applyPreset(name){
   run();
 }
 
+function formatList(values){
+  return values.length ? values.join(', ') : '-';
+}
+
 function run(){
   const L = +document.getElementById('limit').value;
   const W = +document.getElementById('window').value;
@@ -81,13 +85,13 @@ function run(){
     if(ok) q.push(t);
     const after = q.slice();
 
-    lines.push(`${t}s => ${ok ? 'ACCEPT' : 'REJECT'} (excluded=${excluded}, before=${before.length}, after=${after.length})`);
+    lines.push(`${t}s => ${ok ? 'ACCEPT' : 'REJECT'} (excluded=${excluded}, before=[${formatList(before)}], after=[${formatList(after)}])`);
     rows.push({
       t,
       excluded,
-      before: before.join(', '),
+      before: formatList(before),
       decision: ok ? 'ACCEPT' : 'REJECT',
-      after: after.join(', ')
+      after: formatList(after)
     });
   }
 
