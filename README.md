@@ -33,6 +33,7 @@ Tip: after opening `index.html`, click any preset first, then tweak `limit/windo
 - `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
 - A larger `excluded` value indicates boundary-driven cleanup happened before judging ACCEPT/REJECT.
 - The per-request log line in `index.html` follows `... (excluded=X, before=[...], after=[...])`: `excluded` is the count removed at the boundary, while `before` / `after` are the actual in-window timestamp lists before/after current request judgment.
+- Example (copy-paste check): if a detail-table row shows `before=[1,5]`, `decision=ACCEPT`, `after=[1,5,8]`, the matching log line should contain `before=[1,5], after=[1,5,8]` for the same request timestamp.
 
 ### Boundary preset quick verification
 1. Click `boundary` preset.
