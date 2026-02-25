@@ -32,13 +32,13 @@ Tip: after opening `index.html`, click any preset first, then tweak `limit/windo
 ## How to read `excluded` (boundary exclusion count)
 - `excluded` shows how many existing in-window requests were removed **at that step** because they fell outside the window (`now - t >= window`).
 - A larger `excluded` value indicates boundary-driven cleanup happened before judging ACCEPT/REJECT.
-- The per-request log line in `index.html` follows `... (excluded=X, before=Y, after=Z)`: `excluded` is the count removed at the boundary, `before` is active in-window size right before current request judgment, and `after` is active in-window size right after the ACCEPT/REJECT result is applied.
+- The per-request log line in `index.html` follows `... (excluded=X, before=[...], after=[...])`: `excluded` is the count removed at the boundary, while `before` / `after` are the actual in-window timestamp lists before/after current request judgment.
 
 ### Boundary preset quick verification
 1. Click `boundary` preset.
 2. Check rows where timestamp moves across a window edge (for example around `t=10` with `window=10`).
 3. Confirm `excluded` becomes `1` when the oldest event leaves the window exactly at the boundary.
-4. Confirm decision stays consistent with the cleaned window size (`active(before)` and `active(after)`).
+4. In one pass, compare a single detail-table row and its matching log line to confirm they use the same `before=[...]` / `after=[...]` timestamp lists and the decision is consistent.
 5. Confirm rows with `excluded > 0` are highlighted with the `boundary-hit` style (light orange background) so boundary cleanup points are immediately visible.
 6. Confirm the helper note above the table exactly reads `before/after = timestamp lists, not counts` and matches the README wording.
 7. Confirm the line right below it says `Contract check: open DevTools Console and confirm no assertion failed.`.
